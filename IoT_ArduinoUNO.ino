@@ -6,9 +6,9 @@
 #include <LiquidCrystal_I2C.h>
 //DHT header
 #include <DHT.h>
-#include <SoftwareSerial.h> 
-#define RX 2 // nodeMcu softSerial TX(NodeMCU D6) -> arduino 2 
-#define TX 3 // nodeMcu softSerial RX(NodeMCU D7) -> arduino 3
+// #include <SoftwareSerial.h> 
+// #define RX 3 // nodeMcu softSerial TX(NodeMCU D6) -> arduino 2
+// #define TX 2 // nodeMcu softSerial RX(NodeMCU D7) -> arduino 3
 
 #define TRIG_PIN 4    // TRIG 핀 설정. 미세먼지 대체
 #define ECHO_PIN 5    // ECHO 핀 설정. 미세먼지 대체
@@ -23,7 +23,7 @@ MFRC522 rfid(SS_PIN, RST_PIN); // 'rfid' 이름으로 클래스 객체 선언
 MFRC522::MIFARE_Key key;
 //Servo myservo; // 서보 모터 객체 선언 => RaspberryPi3로 옮김
 LiquidCrystal_I2C lcd(0x27, 16, 2);  //LCD 객체 선언. 이상하면 0x3F,16,2로 바꾸기
-SoftwareSerial nodeMCUSerial(RX, TX); // (RX, TX) SoftWareSerial 객체 생성
+// SoftwareSerial nodeMCUSerial(RX, TX); // (RX, TX) SoftWareSerial 객체 생성
 DHT dht(DHT_PIN, DHT22);
 
 float Humidity = 1.0; // 습도 변수
@@ -35,7 +35,7 @@ byte *temp; // 1바이트 포인터 선언(메모리 주소)
 
 void setup ( ) {
   Serial.begin(9600);         // 시리얼 모니터용 하드웨어 시리얼 시작
-  nodeMCUSerial.begin(9600);     // 센서 제어용 소프트웨어 시리얼 시작
+  //nodeMCUSerial.begin(9600);     // 센서 제어용 소프트웨어 시리얼 시작
   SPI.begin();           // SPI 통신 시작
   rfid.PCD_Init();       // RFID(MFRC522) 초기화
   lcd.init(); lcd.backlight(); lcd.clear(); //LCD 초기화
@@ -45,12 +45,11 @@ void setup ( ) {
     key.keyByte[i] = 0xFF;
   }
 // RFID : MIFARE 타입의 카드키 종류들만 인식됨을 표시
-  Serial.println(F("This code scan the MIFARE Classsic NUID."));
-  Serial.print(F("Using the following key:"));
-  printHex(key.keyByte, MFRC522::MF_KEY_SIZE);
+  //Serial.println(F("This code scan the MIFARE Classsic NUID."));
+  //Serial.print(F("Using the following key:"));
+  //printHex(key.keyByte, MFRC522::MF_KEY_SIZE);
 
 // 핀모드 정의
-  //pinMode(WATER_PIN, INPUT); // A0 : 물감지 센서 => NodeMCU로 옮김
   pinMode(TRIG_PIN, OUTPUT); // 4 : TRIG핀
   pinMode(ECHO_PIN, INPUT); // 5 : ECHO 핀
   pinMode(FAN_PIN, OUTPUT); // 6 : 선풍기 핀
@@ -97,24 +96,26 @@ void loop ( )  {
   
   // 현황 파악
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  Serial.println(Dust);
-  Serial.println(Temperature);
-  Serial.println(Humidity);
-  Serial.println(RFIDFlag);
+  Serial.println("A"+Dust);
+  Serial.print("B"); Serial.println(Temperature);
+  Serial.print("C"); Serial.println(Humidity);
+  Serial.println("D" + RFIDFlag);
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   dtostrf(Temperature,6, 2, Temp);
   dtostrf(Humidity,6, 2, Humi);
   // 소프트웨어 시리얼 부분. "\n" 으로 구분 
   // 1. 차량, 2. 온도, 3. 습도, 4. 미세먼지
-  if(nodeMCUSerial.available() > 0){
-    nodeMCUSerial.write(RFIDFlag + "\n"); // 1. 차량
-    nodeMCUSerial.write(Temp,"\n"); // 2. 온도
-    nodeMCUSerial.write(Humi,"\n"); // 3. 습도
-    nodeMCUSerial.write(Dust + "\n"); // 4. 미세먼지
-  }
+  //if(nodeMCUSerial.available() > 0){
+    //char buffer = Serial.read();
+    //nodeMCUSerial.write(buffer);
+    //nodeMCUSerial.write(RFIDFlag + "\n"); // 1. 차량
+    //nodeMCUSerial.write(Temp,"\n"); // 2. 온도
+    //nodeMCUSerial.write(Humi,"\n"); // 3. 습도
+    //nodeMCUSerial.write(Dust + "\n"); // 4. 미세먼지*/
+  //}
   // LCD Part. 출력형식
   // T: 온도C, H: 습도%
-  // Dust : Good/Bad // 공기질
+  // Air : Good/Bad Car : O/X
   lcd.setCursor(0, 0);
   lcd.print("T:");
   lcd.setCursor(2, 0);
