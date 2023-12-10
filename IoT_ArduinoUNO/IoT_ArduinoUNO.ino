@@ -104,7 +104,7 @@ void loop ( )  {
   }
   Serial.print("B"); Serial.println(Temperature);
   Serial.print("C"); Serial.println(Humidity);
-  Serial.println("D" + RFIDFlag);
+  Serial.println("D" + String(RFIDFlag));
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   dtostrf(Temperature,6, 2, Temp);
   dtostrf(Humidity,6, 2, Humi);

@@ -12,13 +12,13 @@ int servo1_angle = 0; // 1번 서보모터 각도
 int servo2_angle = 0; // 2번 서보모터 각도
 // 핀 정의
 #define SERVO1_PIN D3 // 서보모터 1
-#define SERCO2_PIN D4 // 서보모터 2
+#define SERVO2_PIN D4 // 서보모터 2
 #define WATER_PIN D5  // 물 감지 센서
 
 // 와이파이 세팅
-const char* ssid = "Your ID";
-const char* password = "Your PW";
-const char* mqtt_server = "Your IP"; // 매번 확인하고 바꿀 것
+const char* ssid = "1";
+const char* password = "qhdks001!";
+const char* mqtt_server = "192.168.8.177"; // 매번 확인하고 바꿀 것
 
 // 객체 정의
 WiFiClient espClient;       // WiFiClient 객체. 와이파이 연결을 위함.
@@ -107,35 +107,39 @@ void setup() {
 }
 
 void loop() {
+  if(!client.connected()){
+      reconnect();
+  }
   water = digitalRead(WATER_PIN);
   data = Serial.readStringUntil('\n');
+  Serial.println(data);
   // 아두이노 결과 보내기
-  if (data[0] == 'A')
-    client.publish("House/Air", data.substring(1));
-  if (data[0] == 'B')
-    client.publish("House/Temperature", data.substring(1));
-  if (data[0] == 'C'){
-    client.publish("House/Humidity", data.substring(1));
-    strncpy(Air, data.substring(1), 4);
+  if (data[0] == 'A'){
+    client.publish("House/Air", data.substring(1).c_str());
+    Air = data.substring(1);
   }
+  if (data[0] == 'B')
+    client.publish("House/Temperature", data.substring(1).c_str());
+  if (data[0] == 'C')
+    client.publish("House/Humidity", data.substring(1).c_str());
   if (data[0] == 'D')
-    client.publish("House/Car", data.substring(1));
+    client.publish("House/Car", data.substring(1).c_str());
   
   // 물 감지 센서 결과 보내기
-  client.publish("Window/Water", water);
-
+  client.publish("Window/Water", String(water).c_str());
+  // Serial.println(Air);
   // 창문 여는 서보모터 조건
-  if(water == 0 && Air.equals("Good")){
+  if(water == 0 && Air[0] == 'G'){
     servo1.write(30);
     servo2.write(150);
-    client.publish("Window/Servo1", 30);
-    client.publish("Window/Servo2", 150);
+    client.publish("Window/Servo1", "30");
+    client.publish("Window/Servo2", "150");
   }
   else{
     servo1.write(0);
     servo2.write(180);
-    client.publish("Window/Servo1", 0);
-    client.publish("Window/Servo2", 180);
+    client.publish("Window/Servo1", "0");
+    client.publish("Window/Servo2", "180");
   }
   delay(50);
 }

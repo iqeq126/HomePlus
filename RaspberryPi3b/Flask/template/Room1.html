@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src = "https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.js"type = "text/javascript"> </script> 
+    <script type="text/javascript">
+        var host = "localhost";
+        var port = 9001;
+        var mqtt;
+        function onConnect(){
+            console.log("접속완료");
+        }
+        function onFailure(){
+            console.log("접속실패");
+        }
+        function sendMsg(msg){
+            alert(msg);
+            let me = document.getElementById("data");
+            if(msg === "Absence"){
+               me.innerHTML="All LED LOW";
+            }
+	    else if(msg === "Existance"){
+	       me.innerHTML="Green LED HIGH";
+	    }
+	    else if(msg === "Do not disturb"){
+	       me.innerHTML="Red LED HIGH";
+	    }
+            message = new Paho.MQTT.Message(msg);
+            message.destinationName = "Room1/entry";
+            mqtt.send(message);
+
+        }
+        function MQTTConnect(){
+            console.log("mqtt 접속:"+host+","+port);
+            mqtt = new Paho.MQTT.Client(host,port,"javascript_client"); 
+            var options = {
+                timeout:3,
+                onSuccess:onConnect,
+                onFailure:onFailure,
+            }
+            mqtt.connect(options);
+        }
+    </script>
+</head>
+<body>
+    <script type="text/javascript">
+        MQTTConnect();
+    </script>
+    <h1 id="h">Room1</h1>
+    <div id="data"></div>
+    <form>
+        <input type="button" value="Absence" onclick="sendMsg('Absence')">
+        <input type="button" value="Existance" onclick="sendMsg('Existance')">
+	<input type="button" value="Do not disturb" onclick="sendMsg('Do not disturb')">
+    </form>
+</body>
+</html>
