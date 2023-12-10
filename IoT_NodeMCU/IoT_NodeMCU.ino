@@ -6,10 +6,10 @@
 
 // 변수 정의
 String data;  // MQTT 송신용
+String Air = "Bad ";   // 서보 모터 제어용
 int water = 0;  // 물 감지 정보 측정
 int servo1_angle = 0; // 1번 서보모터 각도
 int servo2_angle = 0; // 2번 서보모터 각도
-
 // 핀 정의
 #define SERVO1_PIN D3 // 서보모터 1
 #define SERCO2_PIN D4 // 서보모터 2
@@ -114,8 +114,10 @@ void loop() {
     client.publish("House/Air", data.substring(1));
   if (data[0] == 'B')
     client.publish("House/Temperature", data.substring(1));
-  if (data[0] == 'C')
+  if (data[0] == 'C'){
     client.publish("House/Humidity", data.substring(1));
+    strncpy(Air, data.substring(1), 4);
+  }
   if (data[0] == 'D')
     client.publish("House/Car", data.substring(1));
   
@@ -123,7 +125,7 @@ void loop() {
   client.publish("Window/Water", water);
 
   // 창문 여는 서보모터 조건
-  if(water == 0 && ){
+  if(water == 0 && Air.equals("Good")){
     servo1.write(30);
     servo2.write(150);
     client.publish("Window/Servo1", 30);
