@@ -125,7 +125,7 @@ void loop() {
   client.publish("Window/Water", water);
 
   // 창문 여는 서보모터 조건
-  if(water == 0 && !Air.equals("Good")){
+  if(water == 0 && Air.equals("Good")){
     servo1.write(30);
     servo2.write(150);
     client.publish("Window/Servo1", 30);
