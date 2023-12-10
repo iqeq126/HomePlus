@@ -96,7 +96,12 @@ void loop ( )  {
   
   // 현황 파악
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  Serial.println("A"+Dust);
+  if (Dust < 2000.0){
+    Serial.println("AGood");
+  }
+  else{
+    Serial.println("ABad ");
+  }
   Serial.print("B"); Serial.println(Temperature);
   Serial.print("C"); Serial.println(Humidity);
   Serial.println("D" + RFIDFlag);
