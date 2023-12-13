@@ -5,7 +5,7 @@
     <title>Title</title>
     <script src = "https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.js"type = "text/javascript"> </script> 
     <script type="text/javascript">
-        var host = "localhost";
+        var host = "192.168.8.177";
         var port = 9001;
         var mqtt;
         function onConnect(){
@@ -27,7 +27,7 @@
 	       me.innerHTML="Red LED HIGH";
 	    }
             message = new Paho.MQTT.Message(msg);
-            message.destinationName = "Room1/entry";
+            message.destinationName = "Room2/entry";
             mqtt.send(message);
 
         }
@@ -47,7 +47,7 @@
     <script type="text/javascript">
         MQTTConnect();
     </script>
-    <h1 id="h">Room1</h1>
+    <h1 id="h">Room2</h1>
     <div id="data"></div>
     <form>
         <input type="button" value="Absence" onclick="sendMsg('Absence')">

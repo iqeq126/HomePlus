@@ -2,18 +2,18 @@
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
 #include <Wire.h>
-#include <Servo.h> 
+// #include <Servo.h> : 전력 부족 이슈로 Raspberry Pi3b GPIO 15로 이동
 
 // 변수 정의
 String data;  // MQTT 송신용
 String Air = "Bad ";   // 서보 모터 제어용
 int water = 0;  // 물 감지 정보 측정
-int servo1_angle = 0; // 1번 서보모터 각도
-int servo2_angle = 0; // 2번 서보모터 각도
+// int servo1_angle = 0; // 1번 서보모터 각도
+// int servo2_angle = 0; // 2번 서보모터 각도
 // 핀 정의
-#define SERVO1_PIN D3 // 서보모터 1
-#define SERVO2_PIN D4 // 서보모터 2
-#define WATER_PIN D5  // 물 감지 센서
+// #define SERVO1_PIN D3 // 서보모터 1
+// #define SERVO2_PIN D4 // 서보모터 2
+#define WATER_PIN A0  // 물 감지 센서
 
 // 와이파이 세팅
 const char* ssid = "1";
@@ -23,8 +23,8 @@ const char* mqtt_server = "192.168.8.177"; // 매번 확인하고 바꿀 것
 // 객체 정의
 WiFiClient espClient;       // WiFiClient 객체. 와이파이 연결을 위함.
 PubSubClient client(espClient); // PubSubClinet 객체 MQTT 통신을 위함
-Servo servo1;   // 1번 서보모터 객체. 창문 ON/OFF를 위함
-Servo servo2;   // 2번 서보모터 객체. 창문 ON/OFF를 위함
+//Servo servo1;   // 1번 서보모터 객체. 창문 ON/OFF를 위함
+//Servo servo2;   // 2번 서보모터 객체. 창문 ON/OFF를 위함
 void setup_wifi(){
   delay(10);
   // We start by connecting to a WiFi network
@@ -83,8 +83,9 @@ void reconnect() {
       client.publish("House/Humidity", "hello world");
       client.publish("House/Car", "hello world");
       client.publish("House/Air", "hello world");
-      client.publish("Window/Servo1", "hello world");
-      client.publish("Window/Servo2", "hello world");
+      client.publish("Window/Servo", "hello world");
+//      client.publish("Window/Servo1", "hello world");
+//      client.publish("Window/Servo2", "hello world");
       client.publish("Window/Water", "hello world");
     } else {
       Serial.print("failed, rc=");
@@ -101,16 +102,16 @@ void setup() {
   setup_wifi();   // 와이파이 연결
   client.setServer(mqtt_server, 1883); // MQTT 서버 세팅
   client.setCallback(callback); // MQTT 연결 여부 확인
-  servo1.attach(SERVO1_PIN);  // 3번 핀 : Servo 1번
-  servo1.attach(SERVO2_PIN);  // 4번 핀 : Servo 2번
-  pinMode(WATER_PIN, INPUT); // 5번 핀 : 물감지 센서
+  //  servo1.attach(SERVO1_PIN);  // D3번 핀 : Servo 1번
+  // servo1.attach(SERVO2_PIN);  // D4번 핀 : Servo 2번
+  pinMode(WATER_PIN, INPUT); // A0번 핀 : 물감지 센서
 }
 
 void loop() {
   if(!client.connected()){
       reconnect();
   }
-  water = digitalRead(WATER_PIN);
+  water = analogRead(WATER_PIN);
   data = Serial.readStringUntil('\n');
   Serial.println(data);
   // 아두이노 결과 보내기
@@ -129,17 +130,15 @@ void loop() {
   client.publish("Window/Water", String(water).c_str());
   // Serial.println(Air);
   // 창문 여는 서보모터 조건
-  if(water == 0 && Air[0] == 'G'){
-    servo1.write(30);
-    servo2.write(150);
-    client.publish("Window/Servo1", "30");
-    client.publish("Window/Servo2", "150");
+  if(water < 100 && Air[0] == 'G'){
+    //servo1.write(30);
+    //servo2.write(150);
+    client.publish("Window/Servo", "Open");
   }
   else{
-    servo1.write(0);
-    servo2.write(180);
-    client.publish("Window/Servo1", "0");
-    client.publish("Window/Servo2", "180");
+    //servo1.write(0);
+    //servo2.write(180);
+    client.publish("Window/Servo", "Close");
   }
   delay(50);
 }

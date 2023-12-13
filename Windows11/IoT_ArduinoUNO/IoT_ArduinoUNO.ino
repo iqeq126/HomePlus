@@ -61,13 +61,14 @@ void setup ( ) {
 void loop ( )  {
  // RFID Part
  // 카드 읽힘이 제대로 되면 토글해줌
-  if (rfid.PICC_IsNewCardPresent() || rfid.PICC_ReadCardSerial()){
-    RFIDFlag = !RFIDFlag; // RFIDFlag값을 바꿔준다.
-    // 차량 출입을 알리는 부저를 울려준다.
-    for ( int i = 0; i < 3; i++){
-      tone(BUZ_PIN, BUZ[i], 500);
+    if (rfid.PICC_IsNewCardPresent() || rfid.PICC_ReadCardSerial()){
+      RFIDFlag = !RFIDFlag; // RFIDFlag값을 바꿔준다.
+      // 차량 출입을 알리는 부저를 울려준다.
+      for ( int i = 0; i < 3; i++){
+        tone(BUZ_PIN, BUZ[i], 500);
+      }
     }
-  }
+
   // DHT Part
   if(!isnan(dht.readTemperature()) && !isnan(dht.readHumidity())){
     Temperature = dht.readTemperature(); // 온도값 읽어줌
@@ -96,7 +97,7 @@ void loop ( )  {
   
   // 현황 파악
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  if (Dust < 2000.0){
+  if (Dust < 400.0){
     Serial.println("AGood");
   }
   else{

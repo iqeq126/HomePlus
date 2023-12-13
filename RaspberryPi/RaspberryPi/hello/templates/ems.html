@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MQTT Subscription</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js"></script>
+</head>
+<body>
+
+<div id="House/Air"></div>
+<div id="House/Temperature"></div>
+<div id="House/Humidity"></div>
+<div id="House/Car"></div>
+<div id="Window/Water"></div>
+<div id="Window/Servo"></div>
+<div id="Room1/entry"></div>
+<div id="Room2/entry"></div>
+
+
+
+<script>
+    const topics = ["House/Air", "House/Temperature", "House/Humidity", "House/Car", "Window/Water","Window/Servo", "Room1/entry", "Room2/entry"];
+    const client = new Paho.MQTT.Client("192.168.8.177", 9001, "clientId");
+
+    client.onConnectionLost = onConnectionLost;
+    client.onMessageArrived = onMessageArrived;
+
+    client.connect({onSuccess: onConnect});
+
+    function onConnect() {
+        console.log("Connected to MQTT broker");
+
+        // Subscribe to multiple topics
+        for (let i = 0; i < topics.length; i++) {
+            client.subscribe(topics[i]);
+        }
+    }
+
+    function onConnectionLost(responseObject) {
+        if (responseObject.errorCode !== 0) {
+            console.log("Connection lost:", responseObject.errorMessage);
+        }
+    }
+
+    function onMessageArrived(message) {
+	const topicId = message.destinationName;
+	const topicDiv = document.getElementById(topicId);
+        topicDiv.textContent = `${message.destinationName}: ${message.payloadString}\n`;
+    }
+</script>
+        <!--const airDiv = document.getElementById("Air");
+        const temperatureDiv = document.getElementById("Temperature");
+        const humidityDiv = document.getElementById("Humidity");
+        const carDiv = document.getElementById("Car");
+        const waterDiv = document.getElementById("Water");
+        const servo1Div = document.getElementById("Servo1");
+        const servo2Div = document.getElementById("Servo2");
+        const room1Div = document.getElementById("Room1");
+        const room2Div = document.getElementById("Room2");
+        -->
+	<!--
+	temperatureDiv.textContent = `${message.destinationName}: ${message.payloadString}`;
+        humidityDiv.textContent = `${message.destinationName}: ${message.payloadString}`;
+        carDiv.textContent = `${message.destinationName}: ${message.payloadString}`;
+        waterDiv.textContent = `Water : ${message.destinationName}: ${message.payloadString}`;
+        servo1Div.textContent = `Servo1 : ${message.destinationName}: ${message.payloadString}`;
+        servo2Div.textContent = `Servo2 : ${message.destinationName}: ${message.payloadString}`;
+        Room1Div.textContent = `Room1 : ${message.destinationName}: ${message.payloadString}`;
+        Room2Div = `Room2 : ${message.destinationName}: ${message.payloadString}`;
+
+	-->
+
+</body>
+</html>

@@ -2,9 +2,9 @@ import paho.mqtt.client as mqtt
 import RPi.GPIO as gpio
 import time
 gpio.setwarnings(False)
-pin = [16, 20, 21]
-LED = [1,2,3]
-rgb = ['Red', 'Yellow', 'Green'] 
+pin = [13, 26]
+LED = [0,1]
+rgb = ['Red', 'Green'] 
 
 global led
 led = 0
@@ -13,19 +13,19 @@ gpio.setup(pin, gpio.OUT)
 
 def on_connect(client, userdata, flags, rc):
 	print("connected with result code " + str(rc))
-	client.subscribe("Room2/entry")
+	client.subscribe("Room1/entry")
 
 def on_message(client, userdata, msg):
 	global led
 	led = msg.payload.decode("utf-8")
 	if led == "Absence":
 		for i in LED:
-			gpio.output(pin[i-1], gpio.LOW)
+			gpio.output(pin[i], gpio.LOW)
 		print("All LED is Low")
 	if led == "Existance":
 		for i in LED:
-			gpio.output(pin[i-1], gpio.LOW)
-		gpio.output(pin[2], gpio.HIGH)
+			gpio.output(pin[i], gpio.LOW)
+		gpio.output(pin[1], gpio.HIGH)
 	if led == "Do not disturb":
 		for i in LED:
 			gpio.output(pin[i-1], gpio.LOW)
@@ -35,7 +35,7 @@ def on_message(client, userdata, msg):
 ledClient = mqtt.Client()
 ledClient.on_connect = on_connect
 ledClient.on_message = on_message
-ledClient.connect("localhost", 1883, 60)
+ledClient.connect("192.168.8.177", 1883, 60)
 
 
 try:
@@ -44,6 +44,6 @@ try:
 except KeyboardInterrupt:
 	print("Finished!!")
 	gpio.cleanup()
-	ledClient.unsubscribe("Room2/entry")
+	ledClient.unsubscribe("Room1/entry")
 	ledClient.disconnect()
 

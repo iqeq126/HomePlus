@@ -117,6 +117,9 @@ def room1():
 def room2():
 	return render_template('Room2.html')
 
+@app.route('/ems')
+def ems():
+	return render_template('ems.html')
 @app.route('/dht')
 def myDHT():
 	gpio.setwarnings(False)
