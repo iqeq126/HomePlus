@@ -137,8 +137,8 @@ void loop ( )  {
   lcd.setCursor(0, 1);
   lcd.print("Air:");
   lcd.setCursor(4, 1);
-  // Dust Part. 2000 이하일 때 좋음
-  if(Dust < 2000.0)
+  // Dust Part. 400 이하일 때 좋음
+  if(Dust < 400.0)
     lcd.print("Good");
   else
     lcd.print("Bad ");
