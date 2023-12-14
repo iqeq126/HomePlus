@@ -1,18 +1,7 @@
 # HomePlus
 IoT개론및실습 텀프로젝트
 - 아두이노 파트<br>
-[https://github.com/iqeq126/HomePlus/assets/108468000/187b5897-3306-4a87-a388-21ebd7d31e8e <br>
-]
-[(https://github.com/iqeq126/HomePlus/assets/108468000/187b5897-3306-4a87-a388-21ebd7d31e8e<br>
-]
-
-
-[https://github.com/iqeq126/HomePlus/assets/108468000/d476573d-4a3b-45a5-96a7-9db51770d87f<br>
-]
-
-
-[https://github.com/iqeq126/HomePlus/assets/108468000/f5a240a5-c455-416e-8b98-eab44be59126<br?
-]
+https://github.com/iqeq126/HomePlus/assets/108468000/187b5897-3306-4a87-a388-21ebd7d31e8e <br>
 
 
 [https://github.com/iqeq126/HomePlus/assets/108468000/4fa90a6a-766a-4ba4-8740-5389c7f7220d<br>]
