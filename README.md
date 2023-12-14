@@ -4,9 +4,9 @@ IoT개론및실습 텀프로젝트
 https://github.com/iqeq126/HomePlus/assets/108468000/187b5897-3306-4a87-a388-21ebd7d31e8e <br>
 
 
-[https://github.com/iqeq126/HomePlus/assets/108468000/4fa90a6a-766a-4ba4-8740-5389c7f7220d<br>]
+https://github.com/iqeq126/HomePlus/assets/108468000/4fa90a6a-766a-4ba4-8740-5389c7f7220d<br>
 
-[![KakaoTalk_20231213_044225580](https://github.com/iqeq126/HomePlus/assets/108468000/948bf5a1-1304-4ccf-9675-be67776de0fb)<br>]
+![KakaoTalk_20231213_044225580](https://github.com/iqeq126/HomePlus/assets/108468000/948bf5a1-1304-4ccf-9675-be67776de0fb)<br>
 
 [https://github.com/iqeq126/HomePlus/assets/108468000/9461765f-18e4-453c-ae74-76756e98a7df<br>]
 
