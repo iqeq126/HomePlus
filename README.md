@@ -1,5 +1,10 @@
 # HomePlus
 IoT개론및실습 텀프로젝트
+- 중간 발표<br>
+https://www.miricanvas.com/v/12ihj3p<br>
+- 최종 발표<br>
+https://www.miricanvas.com/v/12pd1gl<br><br>
+
 - 전체 사진<br>
 ![KakaoTalk_20231213_044225580](https://github.com/iqeq126/HomePlus/assets/108468000/948bf5a1-1304-4ccf-9675-be67776de0fb)<br>
 ![KakaoTalk_20231213_053714634](https://github.com/iqeq126/HomePlus/assets/108468000/f68fa388-5614-441d-97e5-1ad0099be027)<br>
